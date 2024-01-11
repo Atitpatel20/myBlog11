@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class StreamAPI_Distinct_Example {
     public static void main(String[] args) {
 
-        // give only distinct record from this list
+        // Q-1 give only distinct record from this list
         // give distinct & sort the record by ascending order
         List<String> data1 = Arrays.asList("apple", "banana", "orange", "apple", "grape", "banana");
         List<String> sorted = data1.stream().distinct().collect(Collectors.toList());
@@ -15,8 +15,7 @@ public class StreamAPI_Distinct_Example {
         System.out.println(sorted);
         System.out.println(sortDistinct);
 
-// remove duplicate people
-        // remove duplicate people & print also duplicate people
+        // Q- 2 remove duplicate people & print also duplicate people
 
         List<Person> duplictePeople = Arrays.asList(
                 new Person("Alice", 25, "Female"),

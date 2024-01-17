@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
@@ -20,10 +22,16 @@ public class PostController {
         PostDto post = postService.createPost(dto);
         return new ResponseEntity<>(post, HttpStatus.CREATED);
     }
-      @GetMapping
+    // http://localhost:8080/api/posts/particular?id=1
+      @GetMapping("/particular")
         public ResponseEntity<PostDto> getPostById(@RequestParam long id){
             PostDto dto = postService.getPostById(id);
             return new ResponseEntity<>(dto,HttpStatus.OK);
 
+    }
+    @GetMapping
+    public List<PostDto> getAllPostById(){
+        List<PostDto> postDtos=postService.getAllPostById();
+        return null;
     }
 }

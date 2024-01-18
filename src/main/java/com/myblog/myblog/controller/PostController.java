@@ -15,8 +15,6 @@ public class PostController {
     public PostController(PostService postService) {
         this.postService = postService;
     }
-
-
     @PostMapping
     public ResponseEntity<?> createPostDto(@RequestBody PostDto dto) {
         PostDto post = postService.createPost(dto);
@@ -27,11 +25,14 @@ public class PostController {
         public ResponseEntity<PostDto> getPostById(@RequestParam long id){
             PostDto dto = postService.getPostById(id);
             return new ResponseEntity<>(dto,HttpStatus.OK);
-
     }
+    // http://localhost:8080/api/posts?pageNo=0&pageSize=3
     @GetMapping
-    public List<PostDto> getAllPostById(){
-        List<PostDto> postDtos=postService.getAllPostById();
-        return null;
+    public List<PostDto> getAllPostById(
+            @RequestParam(name="pageNO" ,required = false,defaultValue = "0") int pageNo,
+            @RequestParam(name="pageSize" ,required = false,defaultValue = "0") int pageSize
+    ){
+        List<PostDto> postDtos=postService.getAllPostById(pageNo,pageSize);
+        return postDtos;
     }
 }

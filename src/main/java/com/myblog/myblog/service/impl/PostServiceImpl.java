@@ -8,6 +8,7 @@ import com.myblog.myblog.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,14 +33,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPostById(int pageNo, int pageSize) {
-       Pageable pageable= PageRequest.of(pageNo,pageSize);
+    public List<PostDto> getAllPostById(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         Page<Post> pagePost = postRepository.findAll(pageable);
         List<Post> posts = pagePost.getContent();
-        List<PostDto> dtos = posts.stream().map(p -> mapToDto(p)).collect(Collectors.toList());
+        List<PostDto> dtos = posts.stream().map(this::mapToDto).collect(Collectors.toList());
         return dtos;
     }
-
     @Override
     public PostDto createPost(PostDto postDto) {
         Post posts = mapToEntity(postDto);

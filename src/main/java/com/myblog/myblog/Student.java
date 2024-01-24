@@ -12,7 +12,6 @@ public class Student {
     public int getMarks() {
         return marks;
     }
-
     public String getGrade() {
         return grade;
     }

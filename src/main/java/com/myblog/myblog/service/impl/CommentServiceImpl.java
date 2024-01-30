@@ -32,10 +32,34 @@ public class CommentServiceImpl implements CommentService {
         comment.setText(commentDto.getText());
         comment.setPost(post);
         Comment savedComments = commentsRepository.save(comment);
+
         CommentDto dto =  new CommentDto();
         dto.setId(savedComments.getId());
         dto.setEmail(savedComments.getEmail());
         dto.setText(savedComments.getText());
+        return dto;
+    }
+
+    @Override
+    public void deleteComment(long id) {
+        commentsRepository.deleteById(id);
+    }
+
+    @Override
+    public CommentDto updateComment(long id,CommentDto commentDto) {
+        Comment comment = commentsRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Post not found with id:" + id)
+        );
+        System.out.println();
+        comment.setId(commentDto.getId());
+        comment.setEmail(commentDto.getEmail());
+        comment.setText(commentDto.getText());
+        Comment updateComments = commentsRepository.save(comment);
+
+        CommentDto dto =  new CommentDto();
+        dto.setId(updateComments.getId());
+        dto.setEmail(updateComments.getEmail());
+        dto.setText(updateComments.getText());
         return dto;
     }
 }

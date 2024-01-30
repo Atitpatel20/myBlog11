@@ -5,6 +5,7 @@ import com.myblog.myblog.exception.ResourceNotFoundException;
 import com.myblog.myblog.payload.PostDto;
 import com.myblog.myblog.repository.PostRepository;
 import com.myblog.myblog.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +19,10 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
+    private ModelMapper modelMapper;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
         this.postRepository = postRepository;
     }
 
@@ -50,19 +53,22 @@ public class PostServiceImpl implements PostService {
         return dto;
     }
     PostDto mapToDto (Post post){
-        PostDto dto = new PostDto();
-        dto.setId(post.getId());
-        dto.setTitle(post.getTitle());
-        dto.setDescription(post.getDescription());
-        dto.setContent(post.getContent());
+        PostDto dto = modelMapper.map(post, PostDto.class);
+//        PostDto dto = new PostDto();
+//
+//        dto.setId(post.getId());
+//        dto.setTitle(post.getTitle());
+//        dto.setDescription(post.getDescription());
+//        dto.setContent(post.getContent());
         return dto;
     }
     Post mapToEntity (PostDto postDto){
-        Post posts = new Post();
-        posts.setId(postDto.getId());
-        posts.setTitle(postDto.getTitle());
-        posts.setDescription(postDto.getDescription());
-        posts.setContent(postDto.getContent());
+        Post posts = modelMapper.map(postDto, Post.class);
+//        Post posts = new Post();
+//        posts.setId(postDto.getId());
+//        posts.setTitle(postDto.getTitle());
+//        posts.setDescription(postDto.getDescription());
+//        posts.setContent(postDto.getContent());
         return posts;
     }
 }

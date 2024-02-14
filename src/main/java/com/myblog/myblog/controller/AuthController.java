@@ -2,12 +2,17 @@ package com.myblog.myblog.controller;
 
 import com.myblog.myblog.entity.Role;
 import com.myblog.myblog.entity.User;
+import com.myblog.myblog.payload.LoginDto;
 import com.myblog.myblog.payload.SignUpDto;
 import com.myblog.myblog.repository.RoleRepository;
 import com.myblog.myblog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +31,18 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @PostMapping("/signin")
+    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getUsernameOrEmail(), loginDto.getPassword());
+        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> createSignUp(@RequestBody SignUpDto signUpDto) {
